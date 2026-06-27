@@ -1,13 +1,13 @@
-# OFDM Principle Simulator (OFDM原理シミュレーター)
+# OFDMの原理
 
-ブラウザ上で直交周波数分割多重方式 (OFDM: Orthogonal Frequency Division Multiplexing) の原理を直感的に学べるインタラクティブな教育用シミュレーターです。
+ブラウザ上で直交周波数分割多重方式 (OFDM: Orthogonal Frequency Division Multiplexing) の原理を学ぶための教育コンテンツです。
 
-🌐 **[シミュレーターを開く (GitHub Pages) ↗](https://agtkh.github.io/ofdm-lecture/)**
+🌐 **[コンテンツを開く (GitHub Pages) ↗](https://agtkh.github.io/ofdm-lecture/)**
 
 ## 概要
 
 Wi-Fi や 4G/5G などの最新無線通信において欠かすことのできないコア技術である「OFDM」。
-数式だけで理解するのが難しいこの技術を、ユーザー自身がパラメータ（周波数、振幅、位相、QAMレベルなど）を動かしながら視覚的に体験できる Web アプリケーションです。
+数式だけで理解するのが難しいこの技術を、パラメータ（周波数、振幅、位相、QAMレベルなど）を動かしながら視覚的に学習できる Web アプリケーションです。
 
 ## 主な学習コンテンツ
 

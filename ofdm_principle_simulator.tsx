@@ -508,11 +508,7 @@ export default function App() {
     <div className="min-h-screen bg-white text-black font-sans selection:bg-black selection:text-white pb-0">
       <header className="bg-black text-white p-8 md:p-12">
         <div className="max-w-5xl mx-auto">
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-black mb-4 uppercase tracking-tighter leading-tight">OFDM原理シミュレーター<br/><span className="text-2xl md:text-4xl font-bold tracking-normal opacity-90 mt-2 block">直交周波数分割多重をブラウザで体験</span></h1>
-          <p className="text-lg md:text-xl font-bold opacity-90 mt-6 max-w-4xl">
-            Wi-Fiや5Gなどの最新無線通信を支えるコア技術「OFDM（直交周波数分割多重方式）」。<br className="hidden md:block" />
-            波の直交性とは何か？ なぜ受信機で分解できるのか？ QAM/QPSK変調やガードインターバルの役割など、数式だけでなくブラウザ上で実際に波を動かしながら視覚的に理解できる、実践的な教育用インタラクティブ教材です。
-          </p>
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-black uppercase tracking-tighter leading-tight">OFDMの原理</h1>
         </div>
       </header>
 
