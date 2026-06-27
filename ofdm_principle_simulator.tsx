@@ -666,11 +666,11 @@ export default function App() {
                 <div className="p-6 md:p-8 bg-white flex flex-col justify-center">
                   <h4 className="font-bold mb-8 bg-black text-white px-3 py-1 inline-block self-start">送りたい波の情報を設定</h4>
                   <div className="mb-8">
-                    <label className="block font-bold mb-3">振幅 \(A\): {demoA.toFixed(2)}</label>
+                    <label className="block font-bold mb-3">振幅 <MathEquation math="A" inline />: {demoA.toFixed(2)}</label>
                     <input type="range" min="0" max="1.5" step="0.1" value={demoA} onChange={(e) => setDemoA(Number(e.target.value))} className="w-full accent-black cursor-pointer" />
                   </div>
                   <div>
-                    <label className="block font-bold mb-3">位相 \(\theta\): {demoTheta}° (度のズレ)</label>
+                    <label className="block font-bold mb-3">位相 <MathEquation math="\theta" inline />: {demoTheta}° (度のズレ)</label>
                     <input type="range" min="0" max="360" step="15" value={demoTheta} onChange={(e) => setDemoTheta(Number(e.target.value))} className="w-full accent-black cursor-pointer" />
                   </div>
                 </div>
