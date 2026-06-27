@@ -9,27 +9,12 @@ const MathEquation = ({ math }: { math: string }) => {
     const renderMath = () => {
       if ((window as any).MathJax && (window as any).MathJax.typesetPromise && nodeRef.current) {
         (window as any).MathJax.typesetPromise([nodeRef.current]).catch((err: any) => console.error(err));
+      } else {
+        setTimeout(() => { if (isMounted) renderMath(); }, 100);
       }
     };
-
-    if (!(window as any).MathJax) {
-      if (!document.getElementById('mathjax-script')) {
-        const script = document.createElement('script');
-        script.id = 'mathjax-script';
-        script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
-        script.async = true;
-        document.head.appendChild(script);
-        script.onload = () => {
-          if (isMounted) renderMath();
-        };
-      } else {
-        document.getElementById('mathjax-script')?.addEventListener('load', () => {
-           if (isMounted) renderMath();
-        });
-      }
-    } else {
-      renderMath();
-    }
+    
+    renderMath();
     return () => { isMounted = false; };
   }, [math]);
 
