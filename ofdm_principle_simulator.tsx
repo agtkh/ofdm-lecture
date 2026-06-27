@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 
 // MathJax動的読み込みとレンダリング用コンポーネント
-const MathEquation = ({ math }: { math: string }) => {
+const MathEquation = ({ math, inline = false }: { math: string, inline?: boolean }) => {
   const nodeRef = useRef(null);
 
   useEffect(() => {
@@ -18,6 +18,9 @@ const MathEquation = ({ math }: { math: string }) => {
     return () => { isMounted = false; };
   }, [math]);
 
+  if (inline) {
+    return <span ref={nodeRef} className="font-serif inline-block mx-1">{`\\(${math}\\)`}</span>;
+  }
   return <div ref={nodeRef} className="my-8 overflow-x-auto text-lg md:text-xl font-serif whitespace-nowrap">{`\\[${math}\\]`}</div>;
 };
 
@@ -559,7 +562,7 @@ export default function App() {
             </h2>
             <p className="mb-6 leading-relaxed text-lg">
               OFDMの送信機は、直交する複数の周波数の波<strong>それぞれに別々のデータ（ここでは波の「振幅の大きさ」として表現）を乗せて</strong>、全て<strong>足し合わせて（合成して）</strong>飛ばします。<br/>
-              受信機にはぐちゃぐちゃに混ざった波 \( S(t) \) が届きますが、ここから特定の周波数の情報を取り出すには、<strong>受信した波に、取り出したい周波数の波を掛け算して積分</strong>します。
+              受信機にはぐちゃぐちゃに混ざった波 <MathEquation math="S(t)" inline /> が届きますが、ここから特定の周波数の情報を取り出すには、<strong>受信した波に、取り出したい周波数の波を掛け算して積分</strong>します。
             </p>
 
             <Accordion title="詳しく見る：なぜ分解できる？ 数式での証明">
@@ -568,7 +571,7 @@ export default function App() {
               <MathEquation math="= A_1 \int_{0}^{T} \sin^2(2\pi f_1 t) dt + A_2 \underbrace{\int_{0}^{T} \sin(2\pi f_2 t) \sin(2\pi f_1 t) dt}_{\text{直交しているので } 0}" />
               <MathEquation math="= A_1 \times \frac{T}{2} + 0" />
               <div className="p-6 bg-gray-100 font-bold mb-6">
-                結論：自分自身以外の周波数は掛け合わせて積分すると「0」になって消えるため、積分値として「元の振幅の半分（\(A_1 / 2\)）」だけが残ります。これを2倍すれば、元の振幅を完璧に逆算できます。
+                結論：自分自身以外の周波数は掛け合わせて積分すると「0」になって消えるため、積分値として「元の振幅の半分（<MathEquation math="A_1 / 2" inline />）」だけが残ります。これを2倍すれば、元の振幅を完璧に逆算できます。
               </div>
             </Accordion>
 
@@ -577,11 +580,11 @@ export default function App() {
                 <h4 className="font-bold mb-6 bg-black text-white px-3 py-1 inline-block">送信機（混ぜる）</h4>
                 <div className="space-y-6">
                   <div>
-                    <label className="block text-sm font-bold mb-2">1Hzの振幅 \(A_1\): {txA1.toFixed(1)}</label>
+                    <label className="block text-sm font-bold mb-2">1Hzの振幅 <MathEquation math="A_1" inline />: {txA1.toFixed(1)}</label>
                     <input type="range" min="-1" max="1" step="0.1" value={txA1} onChange={(e) => setTxA1(Number(e.target.value))} className="w-full accent-black cursor-pointer" />
                   </div>
                   <div>
-                    <label className="block text-sm font-bold mb-2">2Hzの振幅 \(A_2\): {txA2.toFixed(1)}</label>
+                    <label className="block text-sm font-bold mb-2">2Hzの振幅 <MathEquation math="A_2" inline />: {txA2.toFixed(1)}</label>
                     <input type="range" min="-1" max="1" step="0.1" value={txA2} onChange={(e) => setTxA2(Number(e.target.value))} className="w-full accent-black cursor-pointer" />
                   </div>
                 </div>
@@ -644,14 +647,14 @@ export default function App() {
               3. デジタルデータ(QPSK)を乗せても分解できる理由
             </h2>
             <p className="mb-8 leading-relaxed text-lg">
-              実際のOFDMでは、1つの周波数に対して<strong>「I成分（\(\cos\)波）」と「Q成分（\(\sin\)波）」の2つの波をワンセット</strong>として使います。<br/>
+              実際のOFDMでは、1つの周波数に対して<strong>「I成分（<MathEquation math="\cos" inline />波）」と「Q成分（<MathEquation math="\sin" inline />波）」の2つの波をワンセット</strong>として使います。<br/>
               この2つは同じ周波数ですが、タイミングがピッタリ90度ズレており、<strong>同じ周波数であっても互いに直交する</strong>性質を持っています。
             </p>
 
             <Accordion title="詳しく知りたい方へ：位相と振幅を I/Q に分解する仕組み">
               <p className="mb-6 leading-relaxed font-bold text-lg">🤔 なぜ2つの波を組み合わせるの？ 👉 「位相」をコントロールするため！</p>
               <p className="mb-4 leading-relaxed">
-                「送りたい波の振幅（\(A\)）」と「送りたい位相（ズレの角度 \(\theta\)）」が決まっているとき、I成分とQ成分は<strong>三角関数の基本</strong>を使って分解できます。
+                「送りたい波の振幅（<MathEquation math="A" inline />）」と「送りたい位相（ズレの角度 <MathEquation math="\theta" inline />）」が決まっているとき、I成分とQ成分は<strong>三角関数の基本</strong>を使って分解できます。
               </p>
               <MathEquation math="I = A \cos(\theta) \quad , \quad Q = A \sin(\theta)" />
               <div className="p-6 bg-green-100 font-bold mb-10 text-lg">
@@ -678,7 +681,7 @@ export default function App() {
 
             <p className="mb-8 leading-relaxed mt-12 text-lg">
               QPSK変調では I と Q に (+1, -1) などを割り当てて、4方向の位相を作り出し、一度に2ビットの情報を送ります。<br/>
-              受信機では、届いた波に \(\cos\) を掛けて積分すれば「I成分」だけが、\(\sin\) を掛けて積分すれば「Q成分」だけが綺麗に取り出せます。
+              受信機では、届いた波に <MathEquation math="\cos" inline /> を掛けて積分すれば「I成分」だけが、<MathEquation math="\sin" inline /> を掛けて積分すれば「Q成分」だけが綺麗に取り出せます。
             </p>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-10">
@@ -837,7 +840,7 @@ export default function App() {
             </h2>
             
             <p className="mb-6 leading-relaxed text-lg">
-              ここまでは「1つのシンボル（期間 \(T\) の波）」について見てきました。しかし実際の通信では、このシンボルが何個も連続して送られてきます。<br/>
+              ここまでは「1つのシンボル（期間 <MathEquation math="T" inline /> の波）」について見てきました。しかし実際の通信では、このシンボルが何個も連続して送られてきます。<br/>
               シンボルごとに送るデータ（位相）が変わるため、<strong>シンボルとシンボルのつなぎ目では、波形がガクッと途切れて「不連続」になります。</strong>
             </p>
 
