@@ -95,7 +95,8 @@ const WaveGraph = ({ width = 600, height = 150, title, fn, referenceFn, fillArea
         )}
       </div>
       <div className="p-4 overflow-x-auto bg-white">
-        <svg width={width} height={height} viewBox={`0 0 ${width} ${height}`} className="w-full h-auto block min-w-[400px]">
+        <svg width={width} height={height} viewBox={`0 0 ${width} ${height}`} className="w-full h-auto block min-w-[400px]" role="img" aria-label={title}>
+          <title>{title}</title>
           {fillArea && (
             <g strokeWidth={Math.ceil(width / points) + 1.0}>
               {Array.from({ length: points + 1 }).map((_, i) => {
@@ -190,7 +191,8 @@ const MultiSymbolWaveGraph = ({ width = 800, height = 150, title, fn1, fn2, show
     <div className="bg-white mb-6 border-2 border-gray-300">
       <div className="bg-gray-200 p-3 font-bold">{title}</div>
       <div className="p-4 overflow-x-auto bg-white relative">
-        <svg width={width} height={height} viewBox={`0 0 ${width} ${height}`} className="w-full h-auto block min-w-[600px]">
+        <svg width={width} height={height} viewBox={`0 0 ${width} ${height}`} className="w-full h-auto block min-w-[600px]" role="img" aria-label={title}>
+          <title>{title}</title>
           <rect x={0} y={0} width={s1Start} height={height} fill="rgba(255, 165, 0, 0.2)" />
           <rect x={s1Start} y={0} width={s1End - s1Start} height={height} fill="rgba(0, 0, 0, 0.05)" />
           <rect x={s1End} y={0} width={s2Start - s1End} height={height} fill="rgba(255, 165, 0, 0.2)" />
@@ -236,7 +238,8 @@ const IQGraph = ({ i, q, a, thetaDeg, isComplex = false }: { i: number; q: numbe
       <h4 className="font-bold mb-6 bg-black text-white px-3 py-1">
         {isComplex ? '複素平面 (虚数軸と実数軸)' : 'IQ平面 (コンスタレーション)'}
       </h4>
-      <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} className="bg-white max-w-full">
+      <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} className="bg-white max-w-full" role="img" aria-label={isComplex ? '複素平面のグラフ' : 'IQ平面（コンスタレーション）のグラフ'}>
+        <title>{isComplex ? '複素平面のグラフ' : 'IQ平面（コンスタレーション）のグラフ'}</title>
         <line x1={0} y1={center} x2={size} y2={center} stroke="#9ca3af" strokeWidth={1} />
         <line x1={center} y1={0} x2={center} y2={size} stroke="#9ca3af" strokeWidth={1} />
         <text x={size - 45} y={center - 10} className="font-bold text-xs text-gray-500">{isComplex ? '実数 (Re)' : 'I (cos)'}</text>
@@ -290,7 +293,8 @@ const ConstellationGraph = ({ phaseErrorDeg = 0 }: { phaseErrorDeg?: number }) =
   return (
     <div className="bg-gray-100 flex flex-col items-center justify-center p-6 h-full w-full">
       <h4 className="font-bold mb-4 bg-black text-white px-3 py-1">受信機のIQ平面 (QPSK)</h4>
-      <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} className="bg-white max-w-full">
+      <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} className="bg-white max-w-full" role="img" aria-label="受信機のIQ平面（コンスタレーション）と判定エラーを示すグラフ">
+        <title>受信機のIQ平面（コンスタレーション）と判定エラー</title>
         {/* 判定の境界線（十字） */}
         <line x1={0} y1={center} x2={size} y2={center} stroke="red" strokeWidth={2} strokeDasharray="4 4" />
         <line x1={center} y1={0} x2={center} y2={size} stroke="red" strokeWidth={2} strokeDasharray="4 4" />
@@ -401,7 +405,8 @@ const SlidingCorrelationDemo = () => {
       />
       
       <div className="overflow-x-auto bg-gray-50 border-2 border-gray-300 relative">
-        <svg width={width} height={height} viewBox={`0 0 ${width} ${height}`} className="w-full h-auto block min-w-[600px]">
+        <svg width={width} height={height} viewBox={`0 0 ${width} ${height}`} className="w-full h-auto block min-w-[600px]" role="img" aria-label="スライディング相関によるプリアンブル検出の波形グラフ">
+          <title>スライディング相関によるプリアンブル波形の一致グラフ</title>
           {/* オフセットの背景ハイライト */}
           <rect x={offset * dx} y={0} width={preambleLength * dx} height={height} fill="rgba(37, 99, 235, 0.1)" />
           
@@ -503,9 +508,10 @@ export default function App() {
     <div className="min-h-screen bg-white text-black font-sans selection:bg-black selection:text-white pb-0">
       <header className="bg-black text-white p-8 md:p-12">
         <div className="max-w-5xl mx-auto">
-          <h1 className="text-4xl md:text-6xl font-black mb-4 uppercase tracking-tighter">OFDM Principle</h1>
-          <p className="text-lg md:text-xl font-bold opacity-80">
-            直交する周波数とは何か？ なぜ受信機で分解できるのか？
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-black mb-4 uppercase tracking-tighter leading-tight">OFDM原理シミュレーター<br/><span className="text-2xl md:text-4xl font-bold tracking-normal opacity-90 mt-2 block">直交周波数分割多重をブラウザで体験</span></h1>
+          <p className="text-lg md:text-xl font-bold opacity-90 mt-6 max-w-4xl">
+            Wi-Fiや5Gなどの最新無線通信を支えるコア技術「OFDM（直交周波数分割多重方式）」。<br className="hidden md:block" />
+            波の直交性とは何か？ なぜ受信機で分解できるのか？ QAM/QPSK変調やガードインターバルの役割など、数式だけでなくブラウザ上で実際に波を動かしながら視覚的に理解できる、実践的な教育用インタラクティブ教材です。
           </p>
         </div>
       </header>
