@@ -516,19 +516,38 @@ export default function App() {
 
             <div className="flex flex-col md:flex-row gap-6 mb-10 p-6 bg-white">
               <div className="flex-1">
-                <label className="block font-bold mb-3">波1の周波数: {f1} Hz</label>
-                <input type="range" min="1" max="5" value={f1} onChange={(e) => setF1(Number(e.target.value))} className="w-full accent-black cursor-pointer" />
+                <label className="block font-bold mb-3">波1の周波数: {f1.toFixed(1)} Hz</label>
+                <input type="range" min="1" max="5" step="0.1" value={f1} onChange={(e) => setF1(Number(e.target.value))} className="w-full accent-black cursor-pointer" />
               </div>
               <div className="flex-1">
-                <label className="block font-bold mb-3">波2の周波数: {f2} Hz</label>
-                <input type="range" min="1" max="5" value={f2} onChange={(e) => setF2(Number(e.target.value))} className="w-full accent-black cursor-pointer" />
+                <label className="block font-bold mb-3">波2の周波数: {f2.toFixed(1)} Hz</label>
+                <input type="range" min="1" max="5" step="0.1" value={f2} onChange={(e) => setF2(Number(e.target.value))} className="w-full accent-black cursor-pointer" />
               </div>
             </div>
 
-            <WaveGraph title={`波1: sin(2π × ${f1}t)`} fn={(t) => Math.sin(2 * Math.PI * f1 * t)} />
-            <WaveGraph title={`波2: sin(2π × ${f2}t)`} fn={(t) => Math.sin(2 * Math.PI * f2 * t)} />
+            <WaveGraph title={`波1: sin(2π × ${f1.toFixed(1)}t)`} fn={(t) => Math.sin(2 * Math.PI * f1 * t)} />
+            <WaveGraph title={`波2: sin(2π × ${f2.toFixed(1)}t)`} fn={(t) => Math.sin(2 * Math.PI * f2 * t)} />
             <div className="mt-12">
               <WaveGraph title={`波1 × 波2 (掛け合わせた波形)`} fn={(t) => Math.sin(2 * Math.PI * f1 * t) * Math.sin(2 * Math.PI * f2 * t)} fillArea={true} height={200} scale={0.8} />
+              
+              {(() => {
+                let areaSum = 0;
+                for (let i = 0; i < 300; i++) {
+                  areaSum += (Math.sin(2 * Math.PI * f1 * (i / 300)) * Math.sin(2 * Math.PI * f2 * (i / 300))) / 300;
+                }
+                const isOrthogonal = Math.abs(areaSum) < 0.01;
+                
+                return (
+                  <div className={`mt-8 p-6 text-center border-4 ${isOrthogonal ? 'bg-green-100 border-green-500' : 'bg-red-100 border-red-500'}`}>
+                    <h3 className={`text-2xl font-bold mb-3 ${isOrthogonal ? 'text-green-800' : 'text-red-800'}`}>
+                      {isOrthogonal ? '✅ 現在の波は「直交している」状態です' : '❌ 現在の波は「直交していない」状態です'}
+                    </h3>
+                    <p className="text-lg font-bold text-gray-800">
+                      掛け合わせた波の面積の合計: {isOrthogonal ? '0.00 (青と赤の面積が完全に打ち消し合っています)' : `${areaSum.toFixed(2)} (打ち消し合わず、面積が残っています)`}
+                    </p>
+                  </div>
+                );
+              })()}
             </div>
           </div>
         </section>
